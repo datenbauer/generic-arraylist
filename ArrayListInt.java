@@ -35,4 +35,25 @@ public class ArrayListInt {
         currentSize++;
         return true;
     }
+
+    /*
+    Fügt ein Element vorne an die Liste an.
+    todo: prepend überschreibt alles nach dem 1. Wert mit Nullen :(
+     */
+    public boolean prepend(int val) {
+        if(currentSize == maxSize)
+            allocateMemory();
+        int[] tmp = new int[maxSize];
+        tmp[0] = val;
+        for(int i=1; i==currentSize; i++) {
+            tmp[i] = values[i - 1];
+        }
+        values = tmp;
+        return true;
+    }
+
+    public void print(){
+        for(int i=0; i<currentSize;i++)
+            System.out.println(values[i]);
+    }
 }
