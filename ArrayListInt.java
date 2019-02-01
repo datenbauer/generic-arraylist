@@ -1,7 +1,7 @@
 public class ArrayListInt {
-    private int maxSize = 1;
+    private int maxSize = 1;        // aktuell fassbare Elemente
     private int[] values = new int[maxSize];
-    private int currentSize = 0;
+    private int currentSize = 0;    // aktuell gefasste Elemente
 
     /*
     Eine Liste besteht aus einem statischen Array mit begrenzter Größe (definiert über maxSize).
@@ -10,12 +10,12 @@ public class ArrayListInt {
     Standardmäßig wird das Array bei jeder Vergrößerung verdoppelt.
      */
     private void allocateMemory() {
-        maxSize *= 2;
-        int[] tmp = new int[maxSize];
-        for(int i=0; i<maxSize; i++) {
+        int[] tmp = new int[2*maxSize];     // neues Array doppelter Größe anlegen
+        for(int i=0; i<maxSize; i++) {      // Werte umspeichern
             tmp[i] = values[i];
         }
         values = tmp;
+        maxSize *= 2;
     }
 
     /*
