@@ -52,6 +52,13 @@ public class ArrayList<T> {
         return true;
     }
 
+    public T get(int idx) {
+        if(idx<0 || idx>=currentSize) {
+            throw new IndexOutOfBoundsException();
+        }
+        return values[idx];
+    }
+
     public void print(){
         for(int i=0; i<currentSize;i++)
             System.out.println(values[i]);
