@@ -1,3 +1,17 @@
+/******************************************************************************
+ *
+ * Blauäugige Umsetzung einer Arrayliste.
+ *
+ * Folgende Operationen stehen zur Verfügung:
+ *   - Größe ermitteln
+ *   - Element hinten anhängen
+ *   - Element vorne anhängen
+ *   - Element an beliebiger Stelle ermitteln
+ *   - Element an beliebiger Stelle entfernen
+ *
+ *****************************************************************************/
+
+
 public class ArrayList<T> {
     private int maxSize = 1;        // aktuell fassbare Elemente
     private T[] values = (T[])new Object[maxSize];
