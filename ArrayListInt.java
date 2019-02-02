@@ -1,6 +1,6 @@
-public class ArrayListInt {
+public class ArrayList<T> {
     private int maxSize = 1;        // aktuell fassbare Elemente
-    private int[] values = new int[maxSize];
+    private T[] values = (T[])new Object[maxSize];
     private int currentSize = 0;    // aktuell gefasste Elemente
 
     /*
@@ -10,8 +10,8 @@ public class ArrayListInt {
     Standardmäßig wird das Array bei jeder Vergrößerung verdoppelt.
      */
     private void allocateMemory() {
-        int[] tmp = new int[2*maxSize];     // neues Array doppelter Größe anlegen
-        for(int i=0; i<maxSize; i++) {      // Werte umspeichern
+        T[] tmp = (T[])new Object[2*maxSize];   // neues Array doppelter Größe anlegen
+        for(int i=0; i<maxSize; i++) {          // Werte umspeichern
             tmp[i] = values[i];
         }
         values = tmp;
@@ -28,7 +28,7 @@ public class ArrayListInt {
     /*
     Fügt ein Element hinten an die Liste an.
      */
-    public boolean append(int val) {
+    public boolean append(T val) {
         if(currentSize == maxSize)
             allocateMemory();
         values[currentSize] = val;
@@ -39,10 +39,10 @@ public class ArrayListInt {
     /*
     Fügt ein Element vorne an die Liste an.
      */
-    public boolean prepend(int val) {
+    public boolean prepend(T val) {
         if(currentSize == maxSize)
             allocateMemory();
-        int[] tmp = new int[maxSize];
+        T[] tmp = (T[])new Object[maxSize];
         tmp[0] = val;
         currentSize++;
         for(int i=1; i<currentSize; i++) {
