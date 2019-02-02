@@ -7,10 +7,10 @@ public class ArrayList<T> {
     Eine Liste besteht aus einem statischen Array mit begrenzter Größe (definiert über maxSize).
     Um das Fassungsvermögen einer Liste zu erhöhen, muss ein neues Array angelegt werden, in das die "alten" Werte
     hineinkopiert werden.
-    Standardmäßig wird das Array bei jeder Vergrößerung verdoppelt.
+    Standardmäßig wird das Array bei jeder Vergrößerung verzehnfacht.
      */
     private void allocateMemory() {
-        T[] tmp = (T[])new Object[2*maxSize];   // neues Array doppelter Größe anlegen
+        T[] tmp = (T[])new Object[10*maxSize];   // neues Array zehnfacher Größe anlegen
         for(int i=0; i<maxSize; i++) {          // Werte umspeichern
             tmp[i] = values[i];
         }
@@ -52,11 +52,23 @@ public class ArrayList<T> {
         return true;
     }
 
+    /*
+    Gibt das Element an der Stelle idx zurück (beginnend bei 0).
+     */
     public T get(int idx) {
         if(idx<0 || idx>=currentSize) {
             throw new IndexOutOfBoundsException();
         }
         return values[idx];
+    }
+
+    public boolean remove(int idx) {
+        T[] tmp = (T[]) new Object[currentSize-1];
+        for(int i=0; i<currentSize-1; i++)
+            tmp[i] = values[i<idx ? i : i+1];   // bis zum (idx-1). Element kopieren, danach eine Stelle überspringen
+        values = tmp;
+        currentSize--;
+        return true;
     }
 
     public void print(){
