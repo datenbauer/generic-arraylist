@@ -110,9 +110,4 @@ public class ArrayList<T> {
         }
         return true;
     }
-
-    public void print(){
-        for(int i=0; i<currentSize;i++)
-            System.out.println(values[i]);
-    }
 }
