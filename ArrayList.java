@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Blauäugige Umsetzung einer Arrayliste.
+ * Blauäugige Umsetzung einer generischen Arrayliste.
  *
  * Folgende Operationen stehen zur Verfügung:
  *   - Größe ermitteln
@@ -8,6 +8,7 @@
  *   - Element vorne anhängen
  *   - Element an beliebiger Stelle ermitteln
  *   - Element an beliebiger Stelle entfernen
+ *   - Element an beliebiger Stelle einfügen (aktualisieren)
  *
  *****************************************************************************/
 
@@ -30,6 +31,12 @@ public class ArrayList<T> {
         }
         values = tmp;
         maxSize *= 2;
+    }
+
+    private void checkIndex(int idx) {
+        if (idx < 0 || idx >= currentSize) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     /*
@@ -70,18 +77,37 @@ public class ArrayList<T> {
     Gibt das Element an der Stelle idx zurück (beginnend bei 0).
      */
     public T get(int idx) {
-        if(idx<0 || idx>=currentSize) {
-            throw new IndexOutOfBoundsException();
-        }
+        checkIndex(idx);
         return values[idx];
     }
 
+    /*
+    Entfernt das Element an der übergebenen Stelle.
+     */
     public boolean remove(int idx) {
+        checkIndex(idx);
         T[] tmp = (T[]) new Object[currentSize-1];
         for(int i=0; i<currentSize-1; i++)
             tmp[i] = values[i<idx ? i : i+1];   // bis zum (idx-1). Element kopieren, danach eine Stelle überspringen
         values = tmp;
         currentSize--;
+        return true;
+    }
+
+    /*
+    Fügt an gewünschter Stelle den angegebenen Wert ein. Bestehende Werte werden überschrieben.
+    Das Einfügen an der currentSize-ten Stelle ist ein Sonderfall; es wird ein Element angehängt.
+    */
+    public boolean insert(int idx, T val) {
+        checkIndex(idx+1);
+        if (idx < 0 || idx > currentSize) {     // idx darf 1 größer sein als aktuelle Größe
+            throw new IndexOutOfBoundsException();
+        }
+        if(idx==currentSize) {                  // in diesem Fall einfach anhängen
+            this.append(val);
+        } else {
+            values[idx] = val;
+        }
         return true;
     }
 
