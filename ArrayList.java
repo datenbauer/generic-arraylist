@@ -1,6 +1,6 @@
 /******************************************************************************
  *
- * Blauäugige Umsetzung einer generischen Arrayliste.
+ * Einfache Umsetzung einer generischen Arrayliste.
  *
  * Folgende Operationen stehen zur Verfügung:
  *   - Größe ermitteln
@@ -10,13 +10,34 @@
  *   - Element an beliebiger Stelle entfernen
  *   - Element an beliebiger Stelle einfügen (aktualisieren)
  *
+ *   Falls die benötigte Größe abzuschätzen ist, sollte sie dem Konstruktor aus Performance-Gründen beim
+ *   Erzeugen übergeben werden.
+ *
  *****************************************************************************/
 
 
 public class ArrayList<T> {
-    private int maxSize = 1;        // aktuell fassbare Elemente
-    private T[] values = (T[])new Object[maxSize];
-    private int currentSize = 0;    // aktuell gefasste Elemente
+    private int maxSize;        // aktuell fassbare Elemente
+    private T[] values;
+    private int currentSize;        // aktuell gefasste Elemente
+
+    /*
+    Standardkonstruktor, der mit Kapazität von 1 beginnt
+     */
+    public ArrayList() {
+        maxSize = 1;
+        values = (T[]) new Object[maxSize];
+        currentSize = 0;
+    }
+
+    /*
+    Konstruktur mit bestimmter Anfangskapazität
+     */
+    public ArrayList(int size) {
+        maxSize = size;
+        values = (T[]) new Object[maxSize];
+        currentSize = 0;
+    }
 
     /*
     Eine Liste besteht aus einem statischen Array mit begrenzter Größe (definiert über maxSize).
