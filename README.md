@@ -8,3 +8,5 @@ Folgende Operationen stehen zur Verfügung:
 - Element an beliebiger Stelle ermitteln
 - Element an beliebiger Stelle entfernen
 - Element an beliebiger Stelle einfügen (aktualisieren)
+
+Falls die benötigte Größe abzuschätzen ist, sollte sie dem Konstruktor aus Performance-Gründen beim Erzeugen übergeben werden.
