@@ -120,7 +120,6 @@ public class ArrayList<T> {
     Das Einfügen an der currentSize-ten Stelle ist ein Sonderfall; es wird ein Element angehängt.
     */
     public boolean insert(int idx, T val) {
-        checkIndex(idx+1);
         if (idx < 0 || idx > currentSize) {     // idx darf 1 größer sein als aktuelle Größe
             throw new IndexOutOfBoundsException();
         }
