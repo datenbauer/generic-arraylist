@@ -1,25 +1,26 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
-#define INITIAL_CAPACITY 10
+#define INITIAL_CAPACITY 1 // must no be zero (see arraylist_enlarge())
 
 enum STATUS {
     FAILURE,
     SUCCESS
 };
 
-struct arraylist {
+typedef struct arraylist {
     int capacity;   // how many elements can currently fit in
     int *content;   // pointer to array with content
     int size;       // current number of elements
-};
+} arraylist_t;
 
 /*
- * Returns pointer to freshly created arraylist which is
- * initialized with a array of size INITIAL_CAPACITY.
+ * Returns pointer to freshly created arraylist which
+ * can hold INITIAL_SIZE elements.
  */
-struct arraylist* new_arraylist() {
-    struct arraylist *init = (struct arraylist*)malloc(sizeof (struct arraylist));
+arraylist_t* new_arraylist() {
+    arraylist_t *init = (arraylist_t*)malloc(sizeof (arraylist_t));
     int *content = malloc(INITIAL_CAPACITY);
 
     init->capacity = INITIAL_CAPACITY;
@@ -32,35 +33,88 @@ struct arraylist* new_arraylist() {
 /*
  * Returns size of given list.
  */
-int arraylist_size(struct arraylist *list) {
+int arraylist_size(arraylist_t *list) {
     return list->size;
+}
+
+/*
+ * Enlarges the capacity of given list (doubles it).
+ * Returns SUCCESS if allocation was possible, else FAILURE.
+ */
+int arraylist_enlarge(arraylist_t *list) {
+    if((list->content = realloc(list->content, 2*list->capacity))==NULL) {
+        return FAILURE;
+    }
+    list->capacity *= 2;
+    return SUCCESS;
 }
 
 /*
  * Appends element to list (next free slot).
  * Returns SUCCESS if appending was successfull, else FAILURE.
  */
-int arraylist_append(struct arraylist *list, int val) {
+int arraylist_append(arraylist_t *list, int val) {
+    if(list->size==list->capacity){     // list is full -> enlarge
+        if(arraylist_enlarge(list)==FAILURE)
+        return FAILURE;
+    }
     list->content[list->size] = val;
     list->size++;
     return SUCCESS;
 }
 
 /*
- * Gets element from list at idx.
+ * Prepends a value to the list (add at index 0).
+ * Returns SUCCESS if prepending was successfull, else FAILURE.
  */
-int arraylist_get(struct arraylist *list, int idx) {
+int arraylist_prepend(arraylist_t *list, int val) {
+    if(list->size==list->capacity){     // list is full -> enlarge
+        if(arraylist_enlarge(list)==FAILURE)
+        return FAILURE;
+    }
+    for(int i=list->size; i>0; i--) {
+        // move each element one slot up
+        list->content[i] = list->content[i-1];
+    }
+    list->content[0] = val;
+    list->size++;
+    return SUCCESS;
+}
+
+/*
+ * Gets element from list at given index.
+ * TODO: Should check for invalid access. Which error code
+ * to chose (distinguish from correct return value?)? 
+ */
+int arraylist_get(arraylist_t *list, int idx) {
     return list->content[idx];
 }
 
+void list_list(arraylist_t *list) {
+    for(int i=0; i<list->size; i++) {
+        printf("%d\n", list->content[i]);
+    }
+}
+
 int main() {
-    struct arraylist *list = new_arraylist();
+    arraylist_t *list = new_arraylist();
     
     printf("size before insertion: %d\n", arraylist_size(list));
     arraylist_append(list, 1);
-    
-    printf("size after insertion: %d", arraylist_size(list));
-    printf("inserted value: %d", arraylist_get(list, 0));
-    
+    arraylist_append(list, 2);
+    arraylist_append(list, 3);
+    arraylist_append(list, -3534);
+    arraylist_append(list, 334);
+
+    printf("size after insertion: %d\n", arraylist_size(list));
+    printf("capacity after insertion: %d\n", list->capacity);
+    printf("inserted value: %d\n", arraylist_get(list, 1));
+
+    arraylist_prepend(list, 14);
+    printf("size after insertion: %d\n", arraylist_size(list));
+    printf("inserted value: %d\n", arraylist_get(list, 0));
+    printf("listing of values:\n");
+    list_list(list);
+
     return 0;
 }
